@@ -1,4 +1,5 @@
-# tests/test_models.py
+READ
+
 import pytest
 from service.models import Product
 from tests.factories import ProductFactory
@@ -54,5 +55,31 @@ def test_update_product(sample_product):
     assert retrieved_product.price == updated_price
     assert retrieved_product.category == sample_product.category  # unchanged
     assert retrieved_product.availability == sample_product.availability  # unchanged
+
+
+DELETE
+# tests/test_models.py
+import pytest
+from service.models import Product
+from tests.factories import ProductFactory
+
+@pytest.fixture
+def sample_product():
+    # Create a fake product
+    product = ProductFactory()
+    product.save()  # Save product to the database
+    return product
+
+def test_delete_product(sample_product):
+    # Delete the product
+    product_id = sample_product.id
+    sample_product.delete()  # Assuming your Product model has a delete() method
+
+    # Attempt to retrieve the deleted product
+    retrieved_product = Product.get_by_id(product_id)
+
+    # Assertions to verify deletion
+    assert retrieved_product is None  # Product should no longer exist
+
 
 
